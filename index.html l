@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Manhwa Studio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101323;color:white;font-family:Arial;padding:20px}
+h1{color:#a78bfa;text-align:center}
+.card{background:#20263b;padding:20px;border-radius:15px;margin-top:20px}
+input,select,button{width:100%;padding:13px;margin:10px 0;border-radius:8px;border:0}
+button{background:#8055ed;color:white;font-weight:bold}
+#output{white-space:pre-wrap;line-height:1.6}
+</style>
+</head>
+<body>
+<h1>⚡ AI MANHWA STUDIO</h1>
+<p style="text-align:center">Your Manhwa Creation Dashboard</p>
+
+<div class="card">
+<h2>🎬 Create New Video</h2>
+<label>Manhwa Topic</label>
+<input id="topic" placeholder="Enter your story topic">
+
+<label>Video Length</label>
+<select id="duration">
+<option>10 Minutes</option>
+<option>20 Minutes</option>
+<option>30 Minutes</option>
+<option>60 Minutes</option>
+</select>
+
+<label>Story Style</label>
+<select id="style">
+<option>Action Fantasy</option>
+<option>Overpowered Hero</option>
+<option>Revenge</option>
+<option>Adventure</option>
+</select>
+
+<button onclick="generate()">Generate Story Plan</button>
+</div>
+
+<div class="card">
+<h2>📖 Your Story Plan</h2>
+<div id="output">Your story plan will appear here.</div>
+<button onclick="copyText()">Copy Story Plan</button>
+</div>
+
+<script>
+function generate(){
+let topic=document.getElementById("topic").value.trim();
+let duration=document.getElementById("duration").value;
+let style=document.getElementById("style").value;
+if(!topic){alert("Please enter a topic!");return;}
+let result=`MANHWA VIDEO PROJECT
+
+TOPIC: ${topic}
+DURATION: ${duration}
+STYLE: ${style}
+
+STORY:
+Create an original ${style} manhwa story based on ${topic}.
+Give the hero a unique personality, a powerful goal,
+interesting challenges and an exciting ending.
+
+CHARACTERS:
+Create original characters with consistent appearances.
+
+SCENES:
+Divide the story into scenes.
+For every scene include:
+1. Narration in Hindi (English letters).
+2. Detailed 2D Korean manhwa image prompt.
+3. Camera movement and animation prompt.
+4. Background and sound suggestions.
+
+VOICEOVER:
+Write natural Hindi narration in English letters.
+
+ENDING:
+Create an exciting ending that makes viewers
+interested in the next episode.
+
+NOTE:
+This is a starter story plan. Connect an AI service
+to generate complete scripts, images and voiceovers.`;
+
+document.getElementById("output").textContent=result;
+}
+function copyText(){
+let text=document.getElementById("output").textContent;
+if(text==="Your story plan will appear here.")return;
+navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
+}
+</script>
+</body>
+</html>
