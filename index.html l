@@ -3,26 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Manhwa Studio</title>
+<title>AI Manhwa Studio Pro</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101323;color:white;font-family:Arial;padding:20px}
-h1{color:#a78bfa;text-align:center}
-.card{background:#20263b;padding:20px;border-radius:15px;margin-top:20px}
-input,select,button{width:100%;padding:13px;margin:10px 0;border-radius:8px;border:0}
-button{background:#8055ed;color:white;font-weight:bold}
-#output{white-space:pre-wrap;line-height:1.6}
+body{margin:0;background:#0c1020;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;padding:28px 15px;background:linear-gradient(135deg,#5426a8,#151b40)}
+header h1{margin:0;color:#fff;font-size:27px}
+header p{color:#ddd}
+main{max-width:750px;margin:auto;padding:15px}
+.card{background:#191f35;border:1px solid #343b59;border-radius:15px;padding:18px;margin:16px 0}
+h2{color:#bda1ff;font-size:20px}
+label{display:block;margin-top:13px;color:#ddd}
+input,select,textarea{width:100%;padding:13px;margin-top:7px;border-radius:8px;border:1px solid #454c68;background:#10162a;color:white;font-size:15px}
+textarea{min-height:90px;resize:vertical}
+button{background:#8254ed;color:white;border:0;padding:13px;border-radius:9px;font-weight:bold;cursor:pointer;margin-top:12px}
+button:active{opacity:.8}
+.mainbtn{width:100%}
+.output{white-space:pre-wrap;line-height:1.65;color:#eee;font-size:14px;overflow-wrap:anywhere}
+.small{font-size:12px;color:#aab1ca}
 </style>
 </head>
 <body>
-<h1>⚡ AI MANHWA STUDIO</h1>
-<p style="text-align:center">Your Manhwa Creation Dashboard</p>
-
+<header>
+<h1>⚡ AI MANHWA STUDIO PRO</h1>
+<p>Your Original Manhwa Creation Studio</p>
+</header>
+<main>
 <div class="card">
-<h2>🎬 Create New Video</h2>
-<label>Manhwa Topic</label>
-<input id="topic" placeholder="Enter your story topic">
-
+<h2>🎬 Create New Manhwa</h2>
+<label>Manhwa Title</label>
+<input id="title" placeholder="Enter your manhwa title">
+<label>Story Topic</label>
+<textarea id="topic" placeholder="Example: A weak boy gets a mysterious power..."></textarea>
+<label>Genre</label>
+<select id="genre">
+<option>Action Fantasy</option>
+<option>Overpowered Hero</option>
+<option>Adventure</option>
+<option>Revenge</option>
+<option>Magic and Mystery</option>
+<option>Comedy Fantasy</option>
+</select>
 <label>Video Length</label>
 <select id="duration">
 <option>10 Minutes</option>
@@ -30,69 +51,132 @@ button{background:#8055ed;color:white;font-weight:bold}
 <option>30 Minutes</option>
 <option>60 Minutes</option>
 </select>
-
-<label>Story Style</label>
-<select id="style">
-<option>Action Fantasy</option>
-<option>Overpowered Hero</option>
-<option>Revenge</option>
-<option>Adventure</option>
+<label>Number of Scenes</label>
+<select id="scenes">
+<option value="5">5 Scenes</option>
+<option value="10">10 Scenes</option>
+<option value="15">15 Scenes</option>
+<option value="20">20 Scenes</option>
 </select>
-
-<button onclick="generate()">Generate Story Plan</button>
+<button class="mainbtn" onclick="generate()">✨ Generate Manhwa Project</button>
 </div>
 
 <div class="card">
-<h2>📖 Your Story Plan</h2>
-<div id="output">Your story plan will appear here.</div>
-<button onclick="copyText()">Copy Story Plan</button>
+<h2>📖 Story and Script</h2>
+<div id="story" class="output">Your story will appear here.</div>
+<button onclick="copy('story')">📋 Copy Story</button>
 </div>
+
+<div class="card">
+<h2>🎨 Scene-by-Scene Image Prompts</h2>
+<div id="images" class="output">Your image prompts will appear here.</div>
+<button onclick="copy('images')">📋 Copy Image Prompts</button>
+</div>
+
+<div class="card">
+<h2>🎥 Animation and Video Prompts</h2>
+<div id="videos" class="output">Your video prompts will appear here.</div>
+<button onclick="copy('videos')">📋 Copy Video Prompts</button>
+</div>
+
+<div class="card">
+<h2>🎙️ Hindi Voiceover</h2>
+<div id="voice" class="output">Your voiceover will appear here.</div>
+<button onclick="copy('voice')">📋 Copy Voiceover</button>
+</div>
+
+<p class="small">Version 1.0 | AI Manhwa Studio Pro</p>
+</main>
 
 <script>
 function generate(){
-let topic=document.getElementById("topic").value.trim();
-let duration=document.getElementById("duration").value;
-let style=document.getElementById("style").value;
-if(!topic){alert("Please enter a topic!");return;}
-let result=`MANHWA VIDEO PROJECT
+const title=document.getElementById('title').value.trim()||'Untitled Manhwa';
+const topic=document.getElementById('topic').value.trim();
+const genre=document.getElementById('genre').value;
+const duration=document.getElementById('duration').value;
+const count=Number(document.getElementById('scenes').value);
 
-TOPIC: ${topic}
-DURATION: ${duration}
-STYLE: ${style}
+if(!topic){alert('Please enter your story topic first.');return;}
 
-STORY:
-Create an original ${style} manhwa story based on ${topic}.
-Give the hero a unique personality, a powerful goal,
-interesting challenges and an exciting ending.
+let story=`TITLE: ${title}
+GENRE: ${genre}
+LENGTH: ${duration}
 
-CHARACTERS:
-Create original characters with consistent appearances.
+STORY CONCEPT:
+${topic}
 
-SCENES:
-Divide the story into scenes.
-For every scene include:
-1. Narration in Hindi (English letters).
-2. Detailed 2D Korean manhwa image prompt.
-3. Camera movement and animation prompt.
-4. Background and sound suggestions.
+ORIGINAL MANHWA STORY PLAN:
 
-VOICEOVER:
-Write natural Hindi narration in English letters.
+A mysterious event changes the life of the main hero.
+At first, the hero faces difficult challenges and discovers
+that there is more to the world than everyone believes.
 
-ENDING:
-Create an exciting ending that makes viewers
-interested in the next episode.
+The hero begins a journey to understand the mystery,
+meet new characters and discover their true potential.
 
-NOTE:
-This is a starter story plan. Connect an AI service
-to generate complete scripts, images and voiceovers.`;
+Every challenge reveals a new secret. The final scene
+introduces a surprising twist and opens the door to
+the next episode.
 
-document.getElementById("output").textContent=result;
+CHARACTER DESIGN:
+Hero: Create a unique face, hairstyle, outfit and personality.
+Rival: A powerful character with a different personality.
+Supporting character: A loyal friend with an important role.
+
+WRITING NOTE:
+Expand the supplied topic into a complete original story.
+Do not copy existing Manhwa characters or plots.
+`;
+
+let images='';
+let videos='';
+let voice='HINDI VOICEOVER (English letters):\n\n';
+
+for(let i=1;i<=count;i++){
+images+=`SCENE ${i}
+Vertical 9:16 Korean webtoon illustration, premium detailed
+2D manhwa art, cinematic lighting, expressive characters,
+consistent hero appearance, detailed background.
+Story context: ${topic}
+Scene ${i}: Show the next important moment of the original story.
+No text, no watermark.
+
+-------------------------\n`;
+
+videos+=`SCENE ${i} VIDEO PROMPT
+Animate the matching manhwa illustration.
+Smooth cinematic camera movement, natural character
+expressions, subtle hair and clothing movement,
+atmospheric lighting and smooth transitions.
+Keep character design consistent.
+Scene ${i} of: ${topic}
+
+-------------------------\n`;
+
+voice+=`SCENE ${i}:
+Yahan narrator kahani ke agle important moment ko
+natural, emotional aur engaging Hindi mein sunayega.
+
+`;
 }
-function copyText(){
-let text=document.getElementById("output").textContent;
-if(text==="Your story plan will appear here.")return;
-navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
+
+document.getElementById('story').textContent=story;
+document.getElementById('images').textContent=images;
+document.getElementById('videos').textContent=videos;
+document.getElementById('voice').textContent=voice;
+}
+
+function copy(id){
+const value=document.getElementById(id).textContent;
+if(!value||value.startsWith('Your ')){
+alert('Please generate your project first.');
+return;
+}
+if(navigator.clipboard && window.isSecureContext){
+navigator.clipboard.writeText(value).then(()=>alert('Copied successfully!')).catch(()=>alert('Please select and copy the text manually.'));
+}else{
+alert('Please select and copy the text manually.');
+}
 }
 </script>
 </body>
