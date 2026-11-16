@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,29 +6,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI MANHWA STUDIO PRO</title>
 <style>
-body{margin:0;padding:18px;background:#101323;color:white;font-family:Arial}
+body{margin:0;padding:16px;background:#101323;color:white;font-family:Arial}
 .container{max-width:750px;margin:auto}
 h1{text-align:center;color:#a78bfa}
-p{color:#cbd5e1;text-align:center}
-.card{background:#202940;padding:18px;border-radius:14px;margin:15px 0}
-label{display:block;margin:12px 0 6px}
-input,select{width:100%;padding:12px;box-sizing:border-box;border:0;border-radius:8px;font-size:16px}
-button{padding:12px;border:0;border-radius:8px;background:#8b5cf6;color:white;font-weight:bold;margin-top:12px;width:100%;font-size:16px}
-.output{white-space:pre-wrap;background:#111827;padding:12px;border-radius:8px;line-height:1.5}
+p{color:#cbd5e1;line-height:1.5}
+.card{background:#202940;padding:16px;border-radius:14px;margin:15px 0}
+label{display:block;margin:13px 0 6px}
+input,select{width:100%;padding:13px;box-sizing:border-box;border:0;border-radius:8px;font-size:16px}
+button{padding:13px;border:0;border-radius:8px;background:#8b5cf6;color:white;font-weight:bold;margin-top:12px;width:100%;font-size:15px}
 .copy{background:#0e9f6e}
+.output{white-space:pre-wrap;background:#111827;padding:13px;border-radius:8px;line-height:1.6;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="container">
+
 <h1>AI MANHWA STUDIO PRO</h1>
-<p>Your Manhwa Story Creation Studio</p>
+<p style="text-align:center">Your Original Manhwa Creation Studio</p>
 
 <div class="card">
 <label>Manhwa Title</label>
-<input id="title" placeholder="Enter story title">
+<input id="title" placeholder="Enter your title">
 
 <label>Story Topic</label>
-<input id="topic" placeholder="Enter your story topic">
+<input id="topic" placeholder="What is your story about?">
 
 <label>Genre</label>
 <select id="genre">
@@ -37,6 +39,7 @@ button{padding:12px;border:0;border-radius:8px;background:#8b5cf6;color:white;fo
 <option>Comedy</option>
 <option>Mystery</option>
 <option>Emotional</option>
+<option>School Life</option>
 </select>
 
 <label>Video Length</label>
@@ -49,73 +52,112 @@ button{padding:12px;border:0;border-radius:8px;background:#8b5cf6;color:white;fo
 </select>
 
 <label>Number of Scenes</label>
-<input id="scenes" type="number" value="10" min="2" max="50">
+<input id="scenes" type="number" value="30" min="2" max="100">
 
-<button onclick="generate()">GENERATE MANHWA PROJECT</button>
+<button onclick="generate()">GENERATE MASTER AI PROMPT</button>
 </div>
 
 <div class="card">
-<h2>1. Story and Script</h2>
-<div id="story" class="output">Your story will appear here.</div>
-<button class="copy" onclick="copyText('story')">COPY STORY</button>
+<h2>Master AI Prompt</h2>
+<div id="output" class="output">Your complete prompt will appear here.</div>
+<button class="copy" onclick="copyPrompt()">COPY MASTER PROMPT</button>
 </div>
 
 <div class="card">
-<h2>2. Scene-by-Scene Image Prompts</h2>
-<div id="images" class="output">Image prompts will appear here.</div>
-<button class="copy" onclick="copyText('images')">COPY IMAGE PROMPTS</button>
+<h2>How to use</h2>
+<p>1. Generate your Master AI Prompt.</p>
+<p>2. Press Copy Master Prompt.</p>
+<p>3. Open ChatGPT and paste the prompt.</p>
+<p>4. Ask ChatGPT to create your original Manhwa project.</p>
 </div>
 
-<div class="card">
-<h2>3. Animation and Video Prompts</h2>
-<div id="videos" class="output">Video prompts will appear here.</div>
-<button class="copy" onclick="copyText('videos')">COPY VIDEO PROMPTS</button>
-</div>
+<p style="text-align:center">Note: This website creates AI-ready prompts. Actual story generation happens in an AI service such as ChatGPT.</p>
 
-<div class="card">
-<h2>4. Hindi Voiceover (Roman Hindi)</h2>
-<div id="voice" class="output">Voiceover will appear here.</div>
-<button class="copy" onclick="copyText('voice')">COPY VOICEOVER</button>
-</div>
-
-<p>Note: This is a project-planning dashboard. Real AI generation requires connecting AI services.</p>
 </div>
 
 <script>
 function generate(){
-const title=document.getElementById('title').value||'Untitled Manhwa';
-const topic=document.getElementById('topic').value||'A new adventure';
+const title=document.getElementById('title').value.trim()||'Untitled Manhwa';
+const topic=document.getElementById('topic').value.trim()||'A mysterious new adventure';
 const genre=document.getElementById('genre').value;
 const length=document.getElementById('length').value;
-const count=Math.max(2,Math.min(50,Number(document.getElementById('scenes').value)||10));
+const scenes=Math.max(2,Math.min(100,Number(document.getElementById('scenes').value)||30));
 
-document.getElementById('story').textContent=
-'Title: '+title+'\nGenre: '+genre+'\nLength: '+length+
-'\nTopic: '+topic+
-'\n\nCreate an original '+genre+' story about '+topic+
-'. Begin with a powerful hook, introduce memorable characters, build suspense, add emotional moments and finish with a satisfying ending.';
+const prompt = `You are a professional ORIGINAL MANHWA STORY CREATOR and VIDEO SCRIPT WRITER.
 
-let images='',videos='',voice='';
-for(let i=1;i<=count;i++){
-images+='SCENE '+i+'\nCreate a cinematic 2D manhwa illustration for '+title+
-'. Topic: '+topic+'. Genre: '+genre+
-'. Consistent character designs, detailed backgrounds, expressive faces, dramatic lighting, vertical 9:16 composition. No text, no watermark.\n\n';
+Create a complete original manhwa video project using these details:
 
-videos+='SCENE '+i+'\nAnimate the manhwa scene with smooth character movement, natural expressions, cinematic camera movement and matching background motion. Vertical 9:16. Keep character appearance consistent.\n\n';
+TITLE: ${title}
+TOPIC: ${topic}
+GENRE: ${genre}
+VIDEO LENGTH: ${length}
+NUMBER OF SCENES: ${scenes}
 
-voice+='SCENE '+i+'\nNarrator: '+topic+
-'. Is scene mein kahani aage badhti hai. Characters ke emotions aur dialogue ko natural Hindi awaaz mein pesh karein.\n\n';
+LANGUAGE RULE:
+Write all narration and character dialogues in Roman Hindi (Hindi written using English letters). Keep image and animation prompts in clear English.
+
+IMPORTANT:
+- Create an original story, not a copy of an existing manhwa, comic, anime or movie.
+- Create memorable characters with consistent appearances and personalities.
+- Give the story a strong opening hook.
+- Build suspense, emotion, action and satisfying character development.
+- Make every scene connect naturally to the previous scene.
+- Keep the requested video duration in mind.
+- Do not repeat scenes just to increase length.
+
+OUTPUT THE PROJECT IN THESE SECTIONS:
+
+1. STORY OVERVIEW
+Give the title, genre, main characters and a complete story summary.
+
+2. FULL STORY SCRIPT
+Write a detailed, engaging narration in Roman Hindi, with natural character dialogues and scene transitions.
+
+3. SCENE-BY-SCENE BREAKDOWN
+Create exactly ${scenes} numbered scenes.
+For every scene include:
+- Scene purpose
+- Location and time
+- Characters present
+- What happens
+- Character emotions
+- Roman Hindi narration
+- Character dialogues
+
+4. IMAGE PROMPTS
+For every scene, write a detailed English image prompt.
+Use a consistent 2D manhwa art style, character designs, clothing, faces, backgrounds and cinematic composition.
+Avoid text, logos and watermarks in images.
+
+5. ANIMATION AND VIDEO PROMPTS
+For every scene, provide camera movement, character movement, facial expressions, background motion and transition instructions.
+
+6. HINDI VOICEOVER
+Provide the complete narration in Roman Hindi, scene by scene.
+Use natural spoken Hindi, emotional delivery and clear pronunciation.
+
+7. FINAL EDITING GUIDE
+Suggest scene order, transitions, background music mood and sound effects.
+
+Make the project detailed enough for a ${length} video. If the complete answer is too long, continue in numbered parts without skipping scenes. Finish one part at a time and wait for the user to say CONTINUE.
+
+Now create the complete original Manhwa project.`;
+
+document.getElementById('output').textContent=prompt;
 }
-document.getElementById('images').textContent=images;
-document.getElementById('videos').textContent=videos;
-document.getElementById('voice').textContent=voice;
+
+function copyPrompt(){
+const text=document.getElementById('output').textContent;
+if(!text || text==='Your complete prompt will appear here.'){
+alert('First generate your prompt!');
+return;
 }
-function copyText(id){
-const text=document.getElementById(id).textContent;
 if(navigator.clipboard){
-navigator.clipboard.writeText(text).then(()=>alert('Copied!'));
+navigator.clipboard.writeText(text)
+.then(()=>alert('Master Prompt Copied!'))
+.catch(()=>alert('Please select and copy the prompt manually.'));
 }else{
-alert('Please select and copy the text manually.');
+alert('Please select and copy the prompt manually.');
 }
 }
 </script>
